@@ -1,5 +1,7 @@
-﻿# Tic-Tac-Toe Game
-This is a simple Tic Tac Toe game implemented in Flutter. It allows players to play against each other or an AI opponent. The game supports grid sizes of 3x3, 4x4, and 5x5.
+﻿# Tic-Tac-Toe Game (O - X)
+- This is a simple Tic Tac Toe game implemented in Flutter. 
+- It allows players to play against each other or Computer opponent.
+- The game supports grid sizes of 3x3, 4x4, and 5x5.
 
 ## Features
 - Choose to play against another player or the Computer
