@@ -10,6 +10,7 @@ class GameViewModel with ChangeNotifier {
   List<Map<String, dynamic>> gameHistory = [];
   List<String> replayMoves = [];
   bool isAIMoving = false;
+  List<int> _moveHistory = []; // To keep track of moves for undo functionality
 
   GameViewModel() {
     _game = Game(
@@ -43,12 +44,15 @@ class GameViewModel with ChangeNotifier {
   void setGridSize(int size) {
     _game.gridSize = size;
     _game.moves = List.generate(size * size, (_) => '');
+    _moveHistory.clear(); // Clear the move history when grid size changes
     notifyListeners();
   }
 
   void makeMove(int index, BuildContext? context) {
     if (!isAIMoving && _game.moves[index].isEmpty) {
       _game.moves[index] = _game.currentPlayer;
+      _moveHistory.add(index); // Add move to history
+
       if (checkWinner(_game.currentPlayer)) {
         _showWinnerDialog(context!, _game.currentPlayer);
       } else if (!_game.moves.contains('')) {
@@ -60,6 +64,15 @@ class GameViewModel with ChangeNotifier {
           _makeAIMove(context!);
         }
       }
+      notifyListeners();
+    }
+  }
+
+  void undoMove() {
+    if (_moveHistory.isNotEmpty) {
+      int lastMoveIndex = _moveHistory.removeLast();
+      _game.moves[lastMoveIndex] = '';
+      _game.currentPlayer = _game.currentPlayer == 'X' ? 'O' : 'X';
       notifyListeners();
     }
   }
@@ -88,11 +101,11 @@ class GameViewModel with ChangeNotifier {
 
     // Check diagonals
     bool diagonal1 =
-        List.generate(gridSize, (index) => moves[index * (gridSize + 1)])
-            .every((element) => element == player);
+    List.generate(gridSize, (index) => moves[index * (gridSize + 1)])
+        .every((element) => element == player);
     bool diagonal2 =
-        List.generate(gridSize, (index) => moves[(index + 1) * (gridSize - 1)])
-            .every((element) => element == player);
+    List.generate(gridSize, (index) => moves[(index + 1) * (gridSize - 1)])
+        .every((element) => element == player);
 
     return diagonal1 || diagonal2;
   }
@@ -142,8 +155,12 @@ class GameViewModel with ChangeNotifier {
 
   bool checkAlmostWin(List<String> board, String player, int target) {
     for (int i = 0; i < board.length; i += target) {
-      if (board.skip(i).take(target).where((e) => e == player).length ==
-              target - 1 &&
+      if (board
+          .skip(i)
+          .take(target)
+          .where((e) => e == player)
+          .length ==
+          target - 1 &&
           board.skip(i).take(target).contains('')) {
         return true;
       }
@@ -154,7 +171,9 @@ class GameViewModel with ChangeNotifier {
       for (int j = i; j < board.length; j += target) {
         column.add(board[j]);
       }
-      if (column.where((e) => e == player).length == target - 1 &&
+      if (column
+          .where((e) => e == player)
+          .length == target - 1 &&
           column.contains('')) {
         return true;
       }
@@ -168,11 +187,15 @@ class GameViewModel with ChangeNotifier {
     for (int i = target - 1; i < board.length - 1; i += target - 1) {
       diagonal2.add(board[i]);
     }
-    if (diagonal1.where((e) => e == player).length == target - 1 &&
+    if (diagonal1
+        .where((e) => e == player)
+        .length == target - 1 &&
         diagonal1.contains('')) {
       return true;
     }
-    if (diagonal2.where((e) => e == player).length == target - 1 &&
+    if (diagonal2
+        .where((e) => e == player)
+        .length == target - 1 &&
         diagonal2.contains('')) {
       return true;
     }
@@ -243,23 +266,9 @@ class GameViewModel with ChangeNotifier {
   void resetGame() {
     _game.moves = List.generate(_game.gridSize * _game.gridSize, (_) => '');
     _game.currentPlayer = 'X';
+    _moveHistory.clear(); // Clear the move history when resetting the game
     notifyListeners();
   }
-
-  void saveGameHistory() async {
-    final db = _database;
-    if (db != null) {
-      await db.insert(
-        'game_history',
-        {
-          'moves': _game.moves.join(','),
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      loadGameHistory();
-    }
-  }
-
   Future<void> loadGameHistory() async {
     final db = _database;
     if (db != null) {
@@ -269,8 +278,8 @@ class GameViewModel with ChangeNotifier {
         final gridSize = moves.length == 9
             ? '3x3'
             : moves.length == 16
-                ? '4x4'
-                : '5x5';
+            ? '4x4'
+            : '5x5';
         return {
           'gridSize': gridSize,
           'moves': moves,
@@ -311,6 +320,13 @@ class GameViewModel with ChangeNotifier {
   void loadGameHistoryIfNeeded() {
     if (gameHistory.isEmpty) {
       loadGameHistory();
+    }
+  }
+
+  void saveGameHistory() async {
+    final db = _database;
+    if (db != null) {
+      await db.insert;
     }
   }
 }

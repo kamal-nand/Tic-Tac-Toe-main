@@ -20,7 +20,7 @@ class GameReplayScreen extends StatelessWidget {
     double iconSpace = scaleFactor * 25;
     double borderSize = scaleFactor * 5;
     double fontSizeXO = scaleFactor * 30;
-    Color bgColor = const Color(0xFFF3F3F3);
+    Color bgColor = const Color(0xFFE6F7FF);
     Color buttonColor = const Color(0xFF412c5a);
     Color iconColor = const Color(0xFFCBA135);
 

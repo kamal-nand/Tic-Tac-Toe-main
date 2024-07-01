@@ -32,13 +32,13 @@ class _ReplayScreenState extends State<ReplayScreen> {
     double baseHeight = 812.0;
     double scaleFactor =
         (screenWidth / baseWidth + screenHeight / baseHeight) / 2;
-    double iconSize = scaleFactor * 1.5;
+    double iconSize = scaleFactor * 1;
     double iconSpace = scaleFactor * 25;
     double fontSize = scaleFactor * 30;
     double fontSize2 = scaleFactor * 8;
-    Color bgColor = const Color(0xFFF3F3F3);
+    Color bgColor = const Color(0xFFE6F7FF);
     Color buttonColor = const Color(0xFF412c5a);
-    Color iconColor = const Color(0xFFCBA135);
+    Color iconColor = const Color(0xFF87CEEB);
     Color textColor = const Color(0xFF412c5a);
 
     gameViewModel.loadGameHistory();
@@ -104,7 +104,7 @@ class _ReplayScreenState extends State<ReplayScreen> {
                           'ALL',
                           style: TextStyle(
                               fontSize: fontSize2,
-                              color: Colors.red,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold),
                         )),
                       ],

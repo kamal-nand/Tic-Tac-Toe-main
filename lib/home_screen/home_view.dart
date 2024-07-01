@@ -40,14 +40,15 @@ class _HomeScreenState extends State<HomeScreen>
     double baseHeight = 812.0;
     double scaleFactor =
         (screenWidth / baseWidth + screenHeight / baseHeight) / 2;
-    double fontSizeHead = scaleFactor * 35;
+    double fontSizeHead = scaleFactor * 25;
     double fontSize = scaleFactor * 30;
     double space = screenWidth * 0.08;
     double buttonWidth = screenWidth * 0.5;
     double buttonHeight = screenWidth * 0.15;
-    Color buttonColor = const Color(0xFF412c5a);
-    Color textColor = const Color(0xFFCBA135);
-    Color bgColor = const Color(0xFFF3F3F3);
+    Color buttonColor = const Color(0xFFE6F7FF);
+    Color textColor = const Color(0xFF0022FE);
+    Color bgColor = const Color(0xFFE6F7FF);
+    Color ticColor = const Color(0xFF333333);
     double imageSize = screenWidth * 0.6;
 
     return Scaffold(
@@ -70,11 +71,11 @@ class _HomeScreenState extends State<HomeScreen>
                   ScaleTransition(
                     scale: _animation,
                     child: Text(
-                      "TIC-TAC-TOE",
+                      "TIC~TAC~TOE",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontSizeHead,
-                        color: textColor,
+                        color: ticColor,
                       ),
                     ),
                   ),

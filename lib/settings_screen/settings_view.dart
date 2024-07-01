@@ -19,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
     double space = screenWidth * 0.08;
     double buttonWidth = screenWidth * 0.5;
     double buttonHeight = screenWidth * 0.15; //0xFF2845B7
-    Color bgColor = const Color(0xFFF3F3F3);
+    Color bgColor = const Color(0xFFE6F7FF);
     Color buttonColor = const Color(0xFF2845B7);
     Color iconColor = const Color(0xffc3bfbf);
     Color fontColor = const Color(0xFF000000);
